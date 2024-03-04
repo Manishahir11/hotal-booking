@@ -82,26 +82,29 @@ if(isset($_POST['get_all_rooms'])){
     }
 
     $data.="
-    <tr class= 'align-middle'>
-       <td>$i</td>
-       <td>$row[name]</td>
-       <td>$row[area] Sq.ft.</td>
-       <td>
-       <span  class= 'bagde rounded-pill bg-light text-dark'>
-       Adult:$row[adult]
-       </span> <br>
-       <span  class= 'bagde rounded-pill bg-light text-dark'>
-       Children:$row[children]
-       </span>
-       </td>
-       <td>₹$row[price]</td>
-       <td>$row[quantity]</td>
-       <td>$stutas</td>
-       <td><button type='button' onclick='edit_details($row[id])' class='btn btn-sm bg-primary text-white' data-bs-toggle='modal'
-       data-bs-target='#edit-room'>
-       <i class='bi bi-pencil-square'></i></button></td>
-    </tr>
-    ";
+               <tr class= 'align-middle'>
+                <td>$i</td>
+                <td>$row[name]</td>
+               <td>$row[area] Sq.ft.</td>
+              <td>
+              <span  class= 'bagde rounded-pill bg-light text-dark'>
+              Adult:$row[adult]
+              </span> <br>
+              <span  class= 'bagde rounded-pill bg-light text-dark'>
+              Children:$row[children]
+              </span>
+              </td>
+              <td>₹$row[price]</td>
+              <td>$row[quantity]</td>
+              <td>$stutas</td>
+              <td><button type='button' onclick='edit_details($row[id])' class='btn btn-sm bg-primary text-white' data-bs-toggle='modal'
+              data-bs-target='#edit-room'>
+              <i class='bi bi-pencil-square'></i></button>
+              <button type='button' onclick='del_room($row[id])' class='btn btn-sm bg-danger text-white'>
+              <i class='bi bi-trash3-fill'></i></button>
+              </td>
+             </tr>
+            ";
     $i++;
    }
    echo $data;
@@ -140,7 +143,22 @@ if(isset($_POST['get_room'])){
     echo $data;
  }
 
+ if(isset($_POST['del_room'])){
+    $frm_data =filteration($_POST);
 
+   $q = "DELETE FROM `rooms` WHERE `id`=?";
+ 
+    $values = [$frm_data['del_room']];
+
+    if(delete($q,$values,'i')){
+
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
+    
+ }
 
  if(isset($_POST['edit_room'])){
 
@@ -197,6 +215,27 @@ if(isset($_POST['get_room'])){
         die('quary not prepared --insart');
     }
 
-    
+    if($flag){
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
  }
+
+ if(isset($_POST['toggle_stutas'])){
+
+    $frm_data = filteration($_POST);
+
+    $q = "UPDATE `rooms` SET `stutas`=? WHERE `id`=?";
+    $values = [$frm_data['value'],$frm_data['toggle_stutas']];
+
+    if(update($q,$values,'ii')){
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
+ }
+ 
 ?> 

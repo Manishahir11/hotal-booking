@@ -259,6 +259,7 @@ adminLogin();
                     facilities.push(el.value);
                 }
             });
+
             let features = [];
 
             add_room_form.elements['features'].forEach(el => {
@@ -266,8 +267,7 @@ adminLogin();
                     features.push(el.value);
                 }
             });
-           
-
+         
             data.append('features', JSON.stringify(features));
             data.append('facilities', JSON.stringify(facilities));
 
@@ -344,6 +344,29 @@ adminLogin();
 
         }
 
+        function del_room(id)
+        {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/rooms.php", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+
+            xhr.onload = function () {
+
+                if(this.responseText ==1){
+                    alert('success','Room remvove in list!');
+                    get_all_rooms();
+    
+                   }
+                   else{
+                    alert('error','Server down!');
+    
+                   }
+            }
+            xhr.send('del_room='+id);
+
+        }
+
 
         edit_room_form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -402,6 +425,8 @@ adminLogin();
             xhr.send(data);
 
         }
+
+        
         function toggle_stutas(id, val) {
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "ajax/rooms.php", true);
